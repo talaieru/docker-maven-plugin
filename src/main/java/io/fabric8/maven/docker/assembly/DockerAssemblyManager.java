@@ -311,7 +311,7 @@ public class DockerAssemblyManager {
         if (assemblyConfig != null) {
             String baseDir = assemblyConfig.getBasedir();
             if (assembly != null && assembly.getBaseDirectory() != null) {
-                baseDir = assembly.getBaseDirectory();
+                baseDir = "/";
             }
 
             builder.add(ASSEMBLY_NAME, "")

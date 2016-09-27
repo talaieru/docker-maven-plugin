@@ -22,13 +22,13 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>dmp-sample-parent</artifactId>
-    <version>0.16.4</version>
+    <version>0.16-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <groupId>io.fabric8</groupId>
   <artifactId>docker-jolokia-demo</artifactId>
-  <version>0.16.4</version>
+  <version>0.16-SNAPSHOT</version>
   <!-- add custom lifecycle -->
   <packaging>docker</packaging>
 
@@ -309,7 +309,7 @@
                               xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
                               xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
                         <id>jolokia-it</id>
-
+                        <baseDirectory>/max</baseDirectory>
                         <dependencySets>
                           <dependencySet>
                             <includes>

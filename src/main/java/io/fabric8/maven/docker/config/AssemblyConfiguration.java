@@ -2,61 +2,46 @@ package io.fabric8.maven.docker.config;
 
 
 import org.apache.maven.plugin.assembly.model.Assembly;
+import org.apache.maven.plugins.annotations.Parameter;
 
 public class AssemblyConfiguration {
 
     private static final String DEFAULT_BASE_DIR = "/maven";
-    
-    /**
-     * @parameter
-     */
+
+    @Parameter
     private String basedir;
 
-    /**
-     * @parameter
-     */
+    @Parameter
     private String descriptor;
 
-    /**
-     * @parameter
-     */
+    @Parameter
     private Assembly inline;
 
-    /**
-     * @parameter
-     */
+    @Parameter
     private String descriptorRef;
 
     /**
-     * @parameter
      * @deprecated Use {@link BuildImageConfiguration#dockerFileDir} instead
      */
+    @Parameter
     private String dockerFileDir;
 
-    /**
-     * @parameter default-value="true"
-     */
-    private Boolean exportBasedir;
+    @Parameter
+    private Boolean exportBasedir = true;
 
     /**
-     * @paramter default-value="false"
      * @deprecated use permissionMode == ignore instead.
      */
+    @Parameter
     private Boolean ignorePermissions;
 
-    /**
-     * @parameter
-     */
+    @Parameter
     private AssemblyMode mode;
 
-    /**
-     * @parameter
-     */
+    @Parameter
     private String user;
 
-    /**
-     * @parameter default-value="keep"
-     */
+    @Parameter
     private PermissionMode permissions;
 
     public Boolean exportBasedir() {
@@ -136,7 +121,7 @@ public class AssemblyConfiguration {
             config.dockerFileDir = set(dockerFileDir);
             return this;
         }
-        
+
         public Builder exportBasedir(Boolean export) {
             config.exportBasedir = set(export);
             return this;

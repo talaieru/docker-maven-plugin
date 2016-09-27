@@ -2,11 +2,12 @@ package io.fabric8.maven.docker.assembly;
 
 import java.util.Arrays;
 
+import io.fabric8.maven.docker.config.AssemblyConfiguration;
 import io.fabric8.maven.docker.config.BuildImageConfiguration;
+import io.fabric8.maven.docker.util.AnsiLogger;
 import io.fabric8.maven.docker.util.MojoParameters;
-import mockit.*;
+import mockit.Expectations;
 import mockit.Injectable;
-import mockit.NonStrictExpectations;
 import mockit.Tested;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.assembly.AssemblerConfigurationSource;
@@ -21,14 +22,9 @@ import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.archiver.manager.ArchiverManager;
 import org.codehaus.plexus.util.ReflectionUtils;
-import io.fabric8.maven.docker.config.AssemblyConfiguration;
-import io.fabric8.maven.docker.util.AnsiLogger;
 import org.junit.Test;
 
-import java.util.Arrays;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class DockerAssemblyManagerTest {
 
@@ -89,7 +85,7 @@ public class DockerAssemblyManagerTest {
         builder = assemblyManager.createDockerFileBuilder(buildConfig, assemblyConfig, assembly);
         content = builder.content();
 
-        assertTrue(content, content.contains("COPY maven /newbasedir"));
+        assertTrue(content, content.contains("COPY maven /"));
 
 
     }
