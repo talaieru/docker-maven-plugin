@@ -5,6 +5,9 @@ import java.util.Arrays;
 import io.fabric8.maven.docker.config.BuildImageConfiguration;
 import io.fabric8.maven.docker.util.MojoParameters;
 import mockit.*;
+import mockit.Injectable;
+import mockit.NonStrictExpectations;
+import mockit.Tested;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.assembly.AssemblerConfigurationSource;
 import org.apache.maven.plugin.assembly.InvalidAssemblerConfigurationException;
@@ -22,7 +25,10 @@ import io.fabric8.maven.docker.config.AssemblyConfiguration;
 import io.fabric8.maven.docker.util.AnsiLogger;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class DockerAssemblyManagerTest {
 
@@ -46,11 +52,46 @@ public class DockerAssemblyManagerTest {
         BuildImageConfiguration buildConfig = new BuildImageConfiguration();
         AssemblyConfiguration assemblyConfig = buildConfig.getAssemblyConfiguration();
 
-        DockerFileBuilder builder = assemblyManager.createDockerFileBuilder(buildConfig, assemblyConfig);
+        DockerFileBuilder builder = assemblyManager.createDockerFileBuilder(buildConfig, assemblyConfig, null);
         String content = builder.content();
 
         assertFalse(content.contains("COPY"));
         assertFalse(content.contains("VOLUME"));
+    }
+
+    @Test
+    public void testAssembly_Basedir() {
+        AssemblyConfiguration assemblyConfig = new AssemblyConfiguration();
+        BuildImageConfiguration buildConfig = new BuildImageConfiguration.Builder().assembly(assemblyConfig).build();
+
+        DockerFileBuilder builder = assemblyManager.createDockerFileBuilder(buildConfig, assemblyConfig, null);
+        String content = builder.content();
+
+        assertTrue(content, content.contains("COPY maven /maven"));
+
+        assemblyConfig = new AssemblyConfiguration.Builder().basedir("/test").build();
+        buildConfig = new BuildImageConfiguration.Builder().assembly(assemblyConfig).build();
+
+        builder = assemblyManager.createDockerFileBuilder(buildConfig, assemblyConfig, null);
+        content = builder.content();
+
+        assertTrue(content, content.contains("COPY maven /test"));
+
+        Assembly assembly = new Assembly();
+
+        builder = assemblyManager.createDockerFileBuilder(buildConfig, assemblyConfig, assembly);
+        content = builder.content();
+
+        assertTrue(content, content.contains("COPY maven /test"));
+
+        assembly.setBaseDirectory("/newbasedir");
+
+        builder = assemblyManager.createDockerFileBuilder(buildConfig, assemblyConfig, assembly);
+        content = builder.content();
+
+        assertTrue(content, content.contains("COPY maven /newbasedir"));
+
+
     }
 
     @Test
